@@ -1,0 +1,26 @@
+class Magazine:
+    instances = []
+
+    def __init__(self, name, category):
+        if not isinstance(name, str) or not 2 <= len(name) <= 16:
+            raise ValueError("Name must be a string of 2 to 16 characters.")
+        if not isinstance(category, str) or len(category) <= 0:
+            raise ValueError("Category must be a non-empty string.")
+        self.name = name
+        self.category = category
+        self.__articles = []
+        Magazine.instances.append(self)
+
+    def articles(self):
+        return self.__articles
+
+    def add_article(self, article):
+        if article not in self.__articles:
+            self.__articles.append(article)
+
+    def contributors(self):
+        return list(set(article.author for article in self.__articles))
+
+    @classmethod
+    def top_publisher(cls):
+        return max(cls.instances, key=lambda x: len(x.articles()), default=None)
